@@ -26,7 +26,8 @@
           <argument>
             <kind>1</kind>
             <string>/// Initialize player object
-spd = 4;
+spd = 8;
+acc =1;
 hspd = 0;
 vspd = 0;
 grav = 1.5;
