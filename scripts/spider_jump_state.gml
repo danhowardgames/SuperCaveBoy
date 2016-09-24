@@ -12,7 +12,7 @@ if (!place_meeting(x,y+1,Solid)){
     apply_friction(acc);
     
     //check for idle state
-    if (hspd ==0 && vspd == 0){
+    if (hspd < 1 && vspd == 0){
         state = spider_idle_state;
         alarm[0] = 15;
         image_speed = 0;
