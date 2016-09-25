@@ -68,6 +68,8 @@ if (gamepad_is_connected(0)){
 }
 
 if (start &amp;&amp; room = rm_menu) room_goto(rm_one);
+
+if (start &amp;&amp; room = rm_highscore) game_restart();
 </string>
           </argument>
         </arguments>
@@ -167,11 +169,20 @@ switch(room){
         
     case rm_highscore :
         draw_set_halign(fa_center);
-        draw_text_colour(view_wview[0]/2,48,"Time: "+string(floor(time/room_speed)),c_white,c_white,c_white,c_white,1);
-        draw_text_colour(view_wview[0]/2,80,"Time bonus: "+string(timebonus),c_white,c_white,c_white,c_white,1);
-        draw_text_colour(view_wview[0]/2,112,"Sapphires: "+string(sapphires)+" x 100 = "+string(sapphires*100),c_white,c_white,c_white,c_white,1);
-        draw_text_colour(view_wview[0]/2,144,"Total Score: "+string(score),c_white,c_white,c_white,c_white,1);
-        draw_text_colour(view_wview[0]/2,186,"Highscore: "+string(highscore),c_white,c_white,c_white,c_white,1);
+        draw_set_font(fnt_start);
+        draw_text_colour(view_wview[0]/2,28,"Time: "+string(floor(time/room_speed)),c_white,c_white,c_white,c_white,1);
+        draw_text_colour(view_wview[0]/2,60,"Time bonus: "+string(timebonus),c_white,c_white,c_white,c_white,1);
+        draw_text_colour(view_wview[0]/2,92,"Sapphires: "+string(sapphires)+" x 100 = "+string(sapphires*100),c_white,c_white,c_white,c_white,1);
+        draw_text_colour(view_wview[0]/2,124,"Total Score: "+string(score),c_white,c_white,c_white,c_white,1);
+        draw_text_colour(view_wview[0]/2,176,"Highscore: "+string(highscore),c_white,c_white,c_white,c_white,1);
+        
+        var str;
+        if (gamepad_is_connected(0)){
+            str = "Press Start"
+        } else {
+            str = "Press Space"
+        }
+        draw_text_colour(view_wview[0]/2,216,"Press "+string(str)+" to restart",c_white,c_white,c_white,c_white,1);
         break;
         
     default :

@@ -1,17 +1,18 @@
 ///exit_state
+
+sprite_index = spr_player_exit;
+
 if (image_alpha > 0){
-    image_alpha -= .25;
+    image_alpha -= .05;
 } else {
     if (room != room_last){
     //goto next room
     room_goto_next();
     } else {
         //calculate score
-        if (floor(PlayerStats.time/room_speed) < 60) {
-            PlayerStats.timebonus = 1000;
-        } else {
-            PlayerStats.timebonus = 500;
-        }
+        var endtime = floor(PlayerStats.time/room_speed);
+        PlayerStats.timebonus = 2900 - floor(endtime/10)*100;
+        
         score += PlayerStats.timebonus;
         score += PlayerStats.sapphires * 100;
         

@@ -34,7 +34,7 @@ vspd = 0;
 spd = 2;
 
 state = bat_idle_state;
-sight = 180;
+sight = 164;
 </string>
           </argument>
         </arguments>

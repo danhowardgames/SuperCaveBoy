@@ -137,7 +137,12 @@
     <room>rooms\rm_two</room>
     <room>rooms\rm_three</room>
     <room>rooms\rm_four</room>
+    <room>rooms\rm_five</room>
+    <room>rooms\rm_six</room>
+    <room>rooms\rm_seven</room>
+    <room>rooms\rm_eight</room>
     <room>rooms\rm_boss</room>
+    <room>rooms\rm_final</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>
