@@ -32,9 +32,14 @@ hspd = 0;
 vspd = 0;
 grav = 1.5;
 jspd = 16;
+hurtlength = 60;
 state = move_state;
 
 get_input();
+
+//create audio emitter
+audio_em = audio_emitter_create();
+
 </string>
           </argument>
         </arguments>
@@ -60,6 +65,132 @@ get_input();
             <string>/// manage states
 get_input();
 script_execute(state);
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="Lava">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Take Damage from lava
+take_damage();
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="Boss">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Take Damage from boss
+take_damage();
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="Sapphire">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///collect sapphire
+PlayerStats.sapphires++;
+with (other) instance_destroy();
+audio_play_sound(snd_tink,4,false);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="EnemyParent">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Collide with an enemy
+var above_enemy = y &lt; other.y+vspd;
+var falling = vspd &gt; 0;
+
+if (above_enemy &amp;&amp; (falling || state = ledge_grab_state)) {
+    if (!place_meeting(x, yprevious, Solid)) {
+        y=yprevious;
+    }
+    
+    while(!place_meeting(x, y+1, other)) {
+        y++;
+    }
+
+    // Kill the enemy
+    with (other) {
+        instance_destroy();
+    }
+    
+    // Bounce off the enemy
+    vspd = -(16/1.5);
+    
+    // Play the sound
+    audio_play_sound(snd_step, 6, false);
+} else {
+    // Take damage
+    take_damage();
+    
+}
+
 </string>
           </argument>
         </arguments>
@@ -84,77 +215,11 @@ script_execute(state);
             <kind>1</kind>
             <string>///Goto next level
 
-if (up){
+if (up &amp;&amp; other.visible == true){
     y = yprevious;
+    audio_stop_sound(snd_jump);
+    audio_play_sound(snd_exit,4,false);
     state = exit_state;
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="EnemyParent">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>/// Collide with an enemy
-
-var above_enemy = y &lt; other.y+vspd;
-var falling = vspd &gt; 0;
-
-if (above_enemy &amp;&amp; (falling || state == ledge_grab_state)){
-    
-    //code to prevent hitting 2 enemies at once
-    //as soon as you hit enemy, move up (if not obstructed)
-    //to avoid hitting the second enemy at the same time
-    if(!place_meeting(x,yprevious,Solid)){
-        y = yprevious;
-    }
-    //move immediately back to exactly above the enemy
-    // so that it looks natural
-    while(!place_meeting(x,y+1,other)){
-        y++
-    }
-    
-    ///kill the enemy
-    
-    with (other){
-        instance_destroy();
-    }
-    
-    //Bounce off enememy
-    vspd = -(jspd/2);
-    
-} else {
-    ///take damage
-    if (state != hurt_state){
-        image_blend = make_colour_rgb(220,150,150);
-        vspd = -12;
-        hspd = (sign(x-other.x)*10);
-        
-        state = hurt_state;
-        
-        direction_move_bounce(Solid);
-        
-        if (instance_exists(PlayerStats)){
-            PlayerStats.hp -=1;
-        }
-        
-    }
-    
 }
 </string>
           </argument>

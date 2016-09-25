@@ -32,6 +32,95 @@ display_set_gui_size(view_wview[0],view_hview[0]);
 
 hp = 3;
 maxhp = 3;
+sapphires = 0;
+score = 0;
+highscore = 0;
+time = 0;
+timebonus = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///start the game
+
+var start = keyboard_check_pressed(vk_space);
+
+if (gamepad_is_connected(0)){
+    start = gamepad_button_check_pressed(0,gp_start);
+}
+
+if (start &amp;&amp; room = rm_menu) room_goto(rm_one);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="5" enumb="27">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///end the game
+game_end();
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///play bg music
+
+//create audio emitter for bg music
+audio_em = audio_emitter_create();
+
+audio_emitter_gain(audio_em, .5);
+audio_play_sound_on(audio_em,snd_music,true,10);
 </string>
           </argument>
         </arguments>
@@ -56,16 +145,63 @@ maxhp = 3;
             <kind>1</kind>
             <string>///Draw stats
 
-//draw the heart spaces
-
-for (var i=0; i &lt; maxhp; i++){
-    draw_sprite_ext(spr_heart_icon, 0,24+i*36, 20,1,1,0,c_black,.5);
-}
-
-//draw the hearts
-
-for (var i=0; i &lt; hp; i++){
-    draw_sprite_ext(spr_heart_icon, 0,24+i*36, 20,1,1,0,c_white,1);
+switch(room){
+    case rm_menu:
+        draw_set_font(fnt_title);
+        draw_set_halign(fa_center);
+        draw_text_colour(room_width/2+4,32+6,"Super Cave#Boy!",c_black,c_black,c_black,c_black,1);
+        draw_text_colour(room_width/2,32,"Super Cave#Boy!",c_white,c_white,c_white,c_white,1);
+        
+        var str;
+        draw_set_font(fnt_start);
+        if (gamepad_is_connected(0)){
+            str = "Press Start"
+        } else {
+            str = "Press Space"
+        }
+        
+        draw_text_colour(room_width/2+2,room_height-44,str,c_black,c_black,c_black,c_black,1);
+        draw_text_colour(room_width/2,room_height-48,str,c_white,c_white,c_white,c_white,1);
+        
+        break;
+        
+    case rm_highscore :
+        draw_set_halign(fa_center);
+        draw_text_colour(view_wview[0]/2,48,"Time: "+string(floor(time/room_speed)),c_white,c_white,c_white,c_white,1);
+        draw_text_colour(view_wview[0]/2,80,"Time bonus: "+string(timebonus),c_white,c_white,c_white,c_white,1);
+        draw_text_colour(view_wview[0]/2,112,"Sapphires: "+string(sapphires)+" x 100 = "+string(sapphires*100),c_white,c_white,c_white,c_white,1);
+        draw_text_colour(view_wview[0]/2,144,"Total Score: "+string(score),c_white,c_white,c_white,c_white,1);
+        draw_text_colour(view_wview[0]/2,186,"Highscore: "+string(highscore),c_white,c_white,c_white,c_white,1);
+        break;
+        
+    default :
+        //draw the heart spaces
+        for (var i=0; i &lt; maxhp; i++){
+            draw_sprite_ext(spr_heart_icon, 0,24+i*36, 20,1,1,0,c_black,.5);
+        }
+        
+        //draw the hearts
+        for (var i=0; i &lt; hp; i++){
+            draw_sprite_ext(spr_heart_icon, 0,24+i*36, 20,1,1,0,c_white,1);
+        }
+        
+        //draw sapphire count
+        draw_set_halign(fa_right);
+        draw_set_font(fnt_start);
+        var str = "x"+string(sapphires);
+        draw_text_colour(view_wview[0]-16,8,str,c_white,c_white,c_white,c_white,1);
+        var text_width = string_width(str);
+        draw_sprite(spr_sapphire_gui,0,view_wview[0]-32-text_width,22);
+        
+        //draw the timer
+        //add to time
+        time++;
+        draw_text_colour(view_wview[0]/2+64,8,"Time: "+string(floor(time/room_speed)),c_white,c_white,c_white,c_white,1);
+        
+        
+        
+        
+        break;
 }
 </string>
           </argument>
