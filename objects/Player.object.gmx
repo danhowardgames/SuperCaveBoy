@@ -89,6 +89,7 @@ script_execute(state);
           <argument>
             <kind>1</kind>
             <string>///Take Damage from boss
+instance_create(x,y,ScreenShakeSmooth);
 take_damage();
 </string>
           </argument>
@@ -126,6 +127,8 @@ if (above_enemy &amp;&amp; (falling || state = ledge_grab_state)) {
     }
 
     // Kill the enemy
+    instance_create(x,y,StopGame);
+    instance_create(x,y,ScreenShakeSmooth);
     with (other) {
         instance_destroy();
     }
@@ -137,6 +140,8 @@ if (above_enemy &amp;&amp; (falling || state = ledge_grab_state)) {
     audio_play_sound(snd_step, 6, false);
 } else {
     // Take damage
+    instance_create(x,y,StopGame);
+    instance_create(x,y,ScreenShakeSmooth);
     take_damage();
     
 }
@@ -164,6 +169,7 @@ if (above_enemy &amp;&amp; (falling || state = ledge_grab_state)) {
           <argument>
             <kind>1</kind>
             <string>///Take Damage from lava
+instance_create(x,y,ScreenShakeSmooth);
 take_damage();
 </string>
           </argument>

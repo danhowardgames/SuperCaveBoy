@@ -125,6 +125,9 @@
       <object>objects\Blood</object>
       <object>objects\Sapphire_Chunk</object>
       <object>objects\Fire_Bubble</object>
+      <object>objects\ScreenShake</object>
+      <object>objects\StopGame</object>
+      <object>objects\ScreenShakeSmooth</object>
     </objects>
     <objects name="Boss">
       <object>objects\Boss</object>
