@@ -128,7 +128,7 @@ if (above_enemy &amp;&amp; (falling || state = ledge_grab_state)) {
 
     // Kill the enemy
     instance_create(x,y,StopGame);
-    instance_create(x,y,ScreenShakeSmooth);
+    CameraController.state = camera_shake_state;
     with (other) {
         instance_destroy();
     }
@@ -141,7 +141,7 @@ if (above_enemy &amp;&amp; (falling || state = ledge_grab_state)) {
 } else {
     // Take damage
     instance_create(x,y,StopGame);
-    instance_create(x,y,ScreenShakeSmooth);
+    CameraController.state = camera_shake_state;
     take_damage();
     
 }

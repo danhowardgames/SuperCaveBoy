@@ -68,6 +68,7 @@
       <script>scripts\horizontal_move_bounce.gml</script>
       <script>scripts\apply_friction.gml</script>
       <script>scripts\get_input.gml</script>
+      <script>scripts\camera_move.gml</script>
     </scripts>
     <scripts name="Player States">
       <script>scripts\move_state.gml</script>
@@ -95,6 +96,11 @@
       <script>scripts\boss_chase_state.gml</script>
       <script>scripts\boss_smash_state.gml</script>
       <script>scripts\boss_stall_state.gml</script>
+    </scripts>
+    <scripts name="Camera States">
+      <script>scripts\camera_follow_state.gml</script>
+      <script>scripts\camera_static_state.gml</script>
+      <script>scripts\camera_shake_state.gml</script>
     </scripts>
   </scripts>
   <fonts name="fonts">
@@ -125,12 +131,15 @@
       <object>objects\Blood</object>
       <object>objects\Sapphire_Chunk</object>
       <object>objects\Fire_Bubble</object>
-      <object>objects\ScreenShake</object>
       <object>objects\StopGame</object>
-      <object>objects\ScreenShakeSmooth</object>
     </objects>
     <objects name="Boss">
       <object>objects\Boss</object>
+    </objects>
+    <objects name="Camera">
+      <object>objects\ScreenShake</object>
+      <object>objects\ScreenShakeSmooth</object>
+      <object>objects\CameraController</object>
     </objects>
   </objects>
   <rooms name="rooms">

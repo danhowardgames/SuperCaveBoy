@@ -2,9 +2,9 @@
 <object>
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
-  <visible>-1</visible>
+  <visible>0</visible>
   <depth>0</depth>
-  <persistent>0</persistent>
+  <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
@@ -25,13 +25,17 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///initialise the shake variable
-vshake = 6;
-hshake = 6;
-shake_rate = 200;
-shake_decay = 0.20;
+            <string>/// Initialize the camera
 
-shake_count = 0;
+// height and width of view
+view_hview[0] = 270;
+view_wview[0] = 480;
+
+//port size
+view_wport[0] = 960;
+view_hport[0] = 540;
+
+state = camera_static_state;
 </string>
           </argument>
         </arguments>
@@ -54,24 +58,50 @@ shake_count = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/// Do the SHAKE!
-shake_count += 0.02;
+            <string>///execute the state
+script_execute(state);
 
-hshake = hshake * shake_decay;
-vshake = vshake * shake_decay;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="4">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// set up camera
+if !view_enabled
+    {
+    view_visible[0] = true;
+    view_enabled = true;
+    }
 
-if (hshake &lt;= 1 || vshake &lt;= 1){
-    hshake = 0;
-    vshake = 0;
-    instance_destroy();
 
+
+///check to see if we are in a holding screen
+
+if instance_exists(Player){
+    view_xview = (Player.x+(sign(Player.image_xscale)*50))-view_hborder;
+    view_yview = Player.y-view_vborder;
+    state = camera_follow_state;
+} else {
+    state = camera_static_state;
 }
 
-var xp = hshake * cos(shake_count * shake_rate);
-var yp = vshake * cos(shake_count * shake_rate);
-
-view_xview += xp;
-view_yview += yp;
 </string>
           </argument>
         </arguments>
