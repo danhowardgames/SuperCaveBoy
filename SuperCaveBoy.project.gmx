@@ -137,8 +137,6 @@
       <object>objects\Boss</object>
     </objects>
     <objects name="Camera">
-      <object>objects\ScreenShake</object>
-      <object>objects\ScreenShakeSmooth</object>
       <object>objects\CameraController</object>
     </objects>
   </objects>

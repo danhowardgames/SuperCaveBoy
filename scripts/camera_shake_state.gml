@@ -1,9 +1,6 @@
 ///camera_shake_state
 
-var targetX = view_xview + random_range(-20,20);
-var targetY = view_yview + random_range(-20,20);
-var rate = 0.8
-
-camera_move(targetX,targetY,rate);
+view_xview += random_range(-2,2);
+view_yview += random_range(-2,2);
 
 state = camera_follow_state;

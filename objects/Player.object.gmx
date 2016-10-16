@@ -169,7 +169,7 @@ if (above_enemy &amp;&amp; (falling || state = ledge_grab_state)) {
           <argument>
             <kind>1</kind>
             <string>///Take Damage from lava
-instance_create(x,y,ScreenShakeSmooth);
+CameraController.state = camera_shake_state;
 take_damage();
 </string>
           </argument>
